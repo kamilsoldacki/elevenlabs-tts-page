@@ -1,0 +1,70 @@
+# Buduje stronę z kluczem z GitHub Secrets/Variables i publikuje na Pages.
+# W repo: Settings → Pages → Build and deployment → Source: GitHub Actions
+#
+# Secret lub variable (jedno z):
+#   VITE_ELEVENLABS_API_KEY  (preferowane — zgodne z kodem Vite)
+#   ELEVENLABS_API_KEY
+
+name: Deploy Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Resolve API key from secrets/variables
+        id: apikey
+        env:
+          FROM_SECRET_VITE: ${{ secrets.VITE_ELEVENLABS_API_KEY }}
+          FROM_SECRET: ${{ secrets.ELEVENLABS_API_KEY }}
+          FROM_VAR_VITE: ${{ vars.VITE_ELEVENLABS_API_KEY }}
+          FROM_VAR: ${{ vars.ELEVENLABS_API_KEY }}
+        run: |
+          key="${FROM_SECRET_VITE:-${FROM_SECRET:-${FROM_VAR_VITE:-$FROM_VAR}}}"
+          if [ -z "$key" ]; then
+            echo "::error::Brak klucza. Dodaj secret lub variable: VITE_ELEVENLABS_API_KEY lub ELEVENLABS_API_KEY"
+            exit 1
+          fi
+          echo "::add-mask::$key"
+          echo "key=$key" >> "$GITHUB_OUTPUT"
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_ELEVENLABS_API_KEY: ${{ steps.apikey.outputs.key }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

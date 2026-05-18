@@ -1,12 +1,15 @@
 :root {
   color-scheme: dark;
-  --bg: #0a0a0a;
-  --text: #f2f0eb;
-  --muted: rgba(242, 240, 235, 0.55);
-  --border: rgba(242, 240, 235, 0.18);
-  --border-focus: rgba(242, 240, 235, 0.45);
-  --danger: #e8a0a0;
-  font-family: "Montserrat", system-ui, sans-serif;
+  --bg: #000;
+  --text: #fff;
+  --label: #fff;
+  --input-bg: #fff;
+  --input-text: #000;
+  --input-border: #e0e0e0;
+  --btn-bg: #fff;
+  --btn-text: #000;
+  --error: #ff6b6b;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 * {
@@ -18,236 +21,135 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
-  font-weight: 300;
-  letter-spacing: 0.02em;
-}
-
-.bloom {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(
-      ellipse 70% 50% at 50% 85%,
-      rgba(120, 90, 140, 0.22) 0%,
-      transparent 65%
-    ),
-    radial-gradient(
-      ellipse 50% 40% at 20% 20%,
-      rgba(80, 70, 100, 0.12) 0%,
-      transparent 55%
-    );
 }
 
 .page {
-  position: relative;
-  z-index: 1;
-  max-width: 28rem;
-  margin: 0 auto;
-  padding: 4rem 1.5rem 3rem;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem;
 }
 
-.hero {
-  margin-bottom: 2.75rem;
+.block {
   width: 100%;
-}
-
-.tagline {
-  margin: 0 0 1.25rem;
-  font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.title {
-  margin: 0 0 1.25rem;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(2.25rem, 8vw, 3rem);
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: 0.02em;
-}
-
-.lead {
-  margin: 0 auto;
   max-width: 22rem;
-  font-size: 0.85rem;
-  color: var(--muted);
-  line-height: 1.7;
 }
 
-.form-section {
-  width: 100%;
+.block-title {
+  margin: 0 0 1.75rem;
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.block-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  align-items: stretch;
+  gap: 1.25rem;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  text-align: left;
+  gap: 0.35rem;
 }
 
 .field-label {
-  font-size: 0.65rem;
+  font-size: 0.875rem;
   font-weight: 400;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
+  color: var(--label);
 }
 
-.control {
+.req {
+  margin-left: 0.05em;
+}
+
+.input {
   width: 100%;
-  background: transparent;
-  color: var(--text);
-  border: none;
-  border-bottom: 1px solid var(--border);
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--input-text);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 0;
-  padding: 0.65rem 0;
-  font-size: 0.9rem;
-  font-family: inherit;
-  font-weight: 300;
-  transition: border-color 0.2s;
 }
 
-.control:focus {
-  outline: none;
-  border-bottom-color: var(--border-focus);
+.input:focus {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
 }
 
-select.control {
+select.input {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f2f0eb' fill-opacity='0.5' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23000' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0 center;
-  padding-right: 1.25rem;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
 }
 
-textarea.control {
+textarea.input {
   resize: vertical;
-  min-height: 7rem;
-  line-height: 1.65;
-}
-
-textarea.control::placeholder {
-  color: var(--muted);
-}
-
-.counter {
-  margin: 0.15rem 0 0;
-  font-size: 0.7rem;
-  color: var(--muted);
-  text-align: right;
-  letter-spacing: 0.05em;
-}
-
-.api-key-box {
-  text-align: left;
-  border-top: 1px solid var(--border);
-  padding-top: 1rem;
+  min-height: 6.5rem;
+  line-height: 1.45;
 }
 
 .api-key-box summary {
   cursor: pointer;
-  color: var(--muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  list-style: none;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 0.75rem;
 }
 
 .api-key-box summary::-webkit-details-marker {
   display: none;
 }
 
-.hint {
-  font-size: 0.7rem;
-  color: var(--muted);
-  margin: 0.5rem 0 0;
-  line-height: 1.5;
-}
-
 .btn-submit {
-  margin-top: 0.5rem;
   width: 100%;
-  padding: 0.85rem 1.5rem;
-  background: var(--text);
-  color: var(--bg);
+  margin-top: 0.25rem;
+  padding: 0.7rem 1rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--btn-text);
+  background: var(--btn-bg);
   border: none;
-  font-family: inherit;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
+  border-radius: 0;
   cursor: pointer;
-  transition: opacity 0.2s;
 }
 
 .btn-submit:hover:not(:disabled) {
-  opacity: 0.88;
+  opacity: 0.92;
 }
 
 .btn-submit:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .player-wrap {
-  width: 100%;
-  padding-top: 0.5rem;
+  margin-top: 1.25rem;
 }
 
 .player-wrap audio {
   width: 100%;
-  height: 2.5rem;
-  filter: invert(1) opacity(0.85);
 }
 
 .status-line {
-  margin: 0;
-  font-size: 0.75rem;
-  color: var(--muted);
-  letter-spacing: 0.08em;
+  margin: 1rem 0 0;
+  font-size: 0.8rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .error {
-  margin: 0;
-  padding: 0.75rem 0;
-  border-top: 1px solid rgba(232, 160, 160, 0.35);
-  color: var(--danger);
+  margin: 0.75rem 0 0;
   font-size: 0.8rem;
-  text-align: left;
-  line-height: 1.5;
-}
-
-.site-footer {
-  margin-top: auto;
-  padding-top: 3.5rem;
-  width: 100%;
-}
-
-.powered {
-  margin: 0;
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-@media (min-width: 480px) {
-  .page {
-    padding-top: 5rem;
-  }
+  text-align: center;
+  color: var(--error);
 }

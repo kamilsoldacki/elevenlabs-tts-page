@@ -4,64 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Text to Speech</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <div class="bloom" aria-hidden="true"></div>
-
     <main class="page">
-      <header class="hero">
-        <p class="tagline">Text to Speech</p>
-        <h1 class="title">Wpisz tekst<br />i posłuchaj</h1>
-        <p class="lead">
-          Wybierz głos, wklej tekst (do 5000 znaków) i wygeneruj nagranie.
-        </p>
-      </header>
+      <section class="block">
+        <h1 class="block-title">Generuj mowę</h1>
 
-      <section class="form-section">
-        <label class="field">
-          <span class="field-label">Głos</span>
-          <select id="voiceSelect" class="control"></select>
-        </label>
-
-        <label class="field field-text">
-          <span class="field-label">Tekst</span>
-          <textarea
-            id="textInput"
-            class="control"
-            rows="6"
-            placeholder="Wpisz tutaj tekst do odczytania…"
-            maxlength="5000"
-          ></textarea>
-          <p class="counter"><span id="charCount">0</span> / 5000</p>
-        </label>
-
-        <details id="apiKeySection" class="api-key-box" hidden>
-          <summary>Klucz API</summary>
+        <form class="block-form" id="ttsForm" novalidate>
           <label class="field">
-            <span class="field-label">xi-api-key</span>
-            <input
-              id="apiKeyInput"
-              class="control"
-              type="password"
-              autocomplete="off"
-              placeholder="sk_…"
-            />
+            <span class="field-label">Głos</span>
+            <select id="voiceSelect" class="input"></select>
           </label>
-          <p class="hint">
-            Klucz zostaje tylko w tej przeglądarce (sessionStorage).
-          </p>
-        </details>
 
-        <button type="button" id="generateBtn" class="btn-submit">
-          Generuj audio
-        </button>
+          <label class="field">
+            <span class="field-label">Tekst<span class="req">*</span></span>
+            <textarea
+              id="textInput"
+              class="input"
+              rows="5"
+              maxlength="5000"
+              required
+            ></textarea>
+          </label>
+
+          <details id="apiKeySection" class="api-key-box" hidden>
+            <summary>Klucz API</summary>
+            <label class="field">
+              <span class="field-label">xi-api-key<span class="req">*</span></span>
+              <input
+                id="apiKeyInput"
+                class="input"
+                type="password"
+                autocomplete="off"
+              />
+            </label>
+          </details>
+
+          <button type="submit" id="generateBtn" class="btn-submit">Submit</button>
+        </form>
 
         <div class="player-wrap" hidden id="playerWrap">
           <audio id="audioPlayer" controls></audio>
@@ -70,10 +51,6 @@
         <p id="statusText" class="status-line" aria-live="polite"></p>
         <p id="errorBox" class="error" hidden></p>
       </section>
-
-      <footer class="site-footer">
-        <p class="powered">Powered by ElevenLabs</p>
-      </footer>
     </main>
 
     <script type="module" src="/src/main.js"></script>

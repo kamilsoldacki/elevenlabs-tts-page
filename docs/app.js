@@ -132,4 +132,7 @@ async function generateSpeech() {
   }
 }
 
-generateBtn.addEventListener("click", generateSpeech);
+document.getElementById("ttsForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  generateSpeech();
+});

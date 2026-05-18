@@ -4,9 +4,9 @@ const API_KEY_STORAGE = "elevenlabs_tts_api_key";
 const builtInApiKey = import.meta.env.VITE_ELEVENLABS_API_KEY?.trim() || "";
 const modelId = import.meta.env.VITE_TTS_MODEL_ID?.trim() || MODEL_ID;
 
+const ttsForm = document.getElementById("ttsForm");
 const voiceSelect = document.getElementById("voiceSelect");
 const textInput = document.getElementById("textInput");
-const charCount = document.getElementById("charCount");
 const generateBtn = document.getElementById("generateBtn");
 const audioPlayer = document.getElementById("audioPlayer");
 const playerWrap = document.getElementById("playerWrap");
@@ -56,19 +56,12 @@ function setStatus(message) {
   statusText.textContent = message || "";
 }
 
-function updateCharCount() {
-  charCount.textContent = String(textInput.value.length);
-}
-
 function revokeBlobUrl() {
   if (lastBlobUrl) {
     URL.revokeObjectURL(lastBlobUrl);
     lastBlobUrl = null;
   }
 }
-
-textInput.addEventListener("input", updateCharCount);
-updateCharCount();
 
 async function generateSpeech() {
   showError(null);
@@ -153,4 +146,7 @@ async function generateSpeech() {
   }
 }
 
-generateBtn.addEventListener("click", generateSpeech);
+ttsForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  generateSpeech();
+});
