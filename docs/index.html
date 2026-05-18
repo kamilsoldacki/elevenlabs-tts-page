@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,6 +24,7 @@
         max-width: 26rem;
         background: #fff;
         padding: 2rem 1.75rem 1.75rem;
+        border-radius: 12px;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
       }
       .btn-submit {
@@ -36,16 +37,16 @@
   <body>
     <main class="page">
       <section class="block">
-        <h1 class="block-title">Generuj mowę</h1>
+        <h1 class="block-title">Generate speech</h1>
 
         <form class="block-form" id="ttsForm" novalidate>
           <label class="field">
-            <span class="field-label">Głos</span>
+            <span class="field-label">Voice</span>
             <select id="voiceSelect" class="input"></select>
           </label>
 
           <label class="field">
-            <span class="field-label">Tekst<span class="req">*</span></span>
+            <span class="field-label">Text<span class="req">*</span></span>
             <textarea
               id="textInput"
               class="input"

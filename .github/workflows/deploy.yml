@@ -1,9 +1,7 @@
 # Publikuje docs/ na GitHub Pages z kluczem wstrzykniętym z Secrets.
+# Settings → Pages → Source: GitHub Actions
 #
-# Settings → Pages → Source: GitHub Actions  (NIE „folder docs”!)
-#
-# Secret na poziomie repozytorium LUB środowiska github-pages:
-#   ELEVENLABS_API_KEY  lub  VITE_ELEVENLABS_API_KEY
+# Secret: ELEVENLABS_API_KEY lub VITE_ELEVENLABS_API_KEY
 
 name: Deploy Pages
 
@@ -38,7 +36,7 @@ jobs:
         run: |
           key="${FROM_SECRET_VITE:-${FROM_SECRET:-${FROM_VAR_VITE:-$FROM_VAR}}}"
           if [ -z "$key" ]; then
-            echo "::error::Brak klucza. Dodaj Repository secret: ELEVENLABS_API_KEY"
+            echo "::error::Brak klucza. Dodaj secret: ELEVENLABS_API_KEY"
             exit 1
           fi
           echo "::add-mask::$key"

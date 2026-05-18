@@ -1,6 +1,6 @@
 const VOICES = [
-  { id: "8PFKHwg70zjSRTfDg4hk", label: "Głos 1" },
-  { id: "7hDCGMwLtzZG6Zh6ZUVC", label: "Głos 2" },
+  { id: "8PFKHwg70zjSRTfDg4hk", label: "Tilly PVC1 2026-05-18" },
+  { id: "7hDCGMwLtzZG6Zh6ZUVC", label: "Tilly PVC2 2026-05-18" },
 ];
 
 const MAX_CHARS = 5000;
@@ -51,23 +51,23 @@ async function generateSpeech() {
   setStatus("");
 
   if (API_KEY === "__INJECT_KEY__") {
-    showError("Brak klucza API — uruchom deploy z GitHub Actions.");
+    showError("Missing API key — deploy with GitHub Actions.");
     return;
   }
 
   const text = textInput.value.trim();
   if (!text) {
-    showError("Wpisz tekst do wygenerowania.");
+    showError("Enter some text to generate.");
     return;
   }
   if (text.length > MAX_CHARS) {
-    showError(`Tekst jest za długi (max ${MAX_CHARS} znaków).`);
+    showError(`Text is too long (max ${MAX_CHARS} characters).`);
     return;
   }
 
   const voiceId = voiceSelect.value;
   generateBtn.disabled = true;
-  setStatus("Generuję audio…");
+  setStatus("Generating audio…");
 
   try {
     const response = await fetch(
@@ -84,7 +84,7 @@ async function generateSpeech() {
     );
 
     if (!response.ok) {
-      let detail = `Błąd API (${response.status})`;
+      let detail = `API error (${response.status})`;
       try {
         const errJson = await response.json();
         detail =
@@ -104,7 +104,7 @@ async function generateSpeech() {
     lastBlobUrl = URL.createObjectURL(blob);
     audioPlayer.src = lastBlobUrl;
     playerWrap.hidden = false;
-    setStatus("Gotowe — możesz odsłuchać nagranie.");
+    setStatus("Done — you can play the recording.");
     await audioPlayer.play().catch(() => {});
   } catch (error) {
     console.error(error);
