@@ -44,6 +44,11 @@ jobs:
           echo "::add-mask::$key"
           echo "key=$key" >> "$GITHUB_OUTPUT"
 
+      - name: Set GitHub Pages asset paths
+        run: |
+          base="/${{ github.event.repository.name }}"
+          sed -i "s|__BASE__|${base}|g" docs/index.html
+
       - name: Inject API key into app.js
         env:
           API_KEY: ${{ steps.apikey.outputs.key }}
@@ -53,14 +58,15 @@ jobs:
           p = pathlib.Path('docs/app.js')
           text = p.read_text(encoding='utf-8')
           quoted = json.dumps(os.environ['API_KEY'])
-          if '\"__ELEVENLABS_API_KEY__\"' not in text:
+          old = 'const API_KEY = \"__INJECT_KEY__\";'
+          if old not in text:
               raise SystemExit('Placeholder not found in app.js')
-          p.write_text(text.replace('\"__ELEVENLABS_API_KEY__\"', quoted), encoding='utf-8')
+          p.write_text(text.replace(old, f'const API_KEY = {quoted};', 1), encoding='utf-8')
           "
 
       - name: Verify key was injected
         run: |
-          if grep -q '__ELEVENLABS_API_KEY__' docs/app.js; then
+          if grep '^const API_KEY' docs/app.js | grep -q '__INJECT_KEY__'; then
             echo "::error::Klucz nie został wstrzyknięty do app.js"
             exit 1
           fi

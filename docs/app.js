@@ -5,7 +5,7 @@ const VOICES = [
 
 const MAX_CHARS = 5000;
 const MODEL_ID = "eleven_v4";
-const API_KEY = "__ELEVENLABS_API_KEY__";
+const API_KEY = "__INJECT_KEY__";
 
 const ttsForm = document.getElementById("ttsForm");
 const voiceSelect = document.getElementById("voiceSelect");
@@ -50,8 +50,8 @@ async function generateSpeech() {
   showError(null);
   setStatus("");
 
-  if (API_KEY === "__ELEVENLABS_API_KEY__") {
-    showError("Strona nie została wdrożona z GitHub Actions (brak klucza w buildzie).");
+  if (API_KEY === "__INJECT_KEY__") {
+    showError("Brak klucza API — uruchom deploy z GitHub Actions.");
     return;
   }
 
