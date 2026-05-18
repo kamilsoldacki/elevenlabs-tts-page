@@ -37,26 +37,23 @@
   <body>
     <main class="page">
       <section class="block">
-        <h1 class="block-title">Generate speech</h1>
-
         <form class="block-form" id="ttsForm" novalidate>
           <label class="field">
-            <span class="field-label">Voice</span>
-            <select id="voiceSelect" class="input"></select>
+            <select id="voiceSelect" class="input" aria-label="Voice"></select>
           </label>
 
           <label class="field">
-            <span class="field-label">Text<span class="req">*</span></span>
             <textarea
               id="textInput"
               class="input"
               rows="5"
               maxlength="5000"
+              aria-label="Text"
               required
             ></textarea>
           </label>
 
-          <button type="submit" id="generateBtn" class="btn-submit">Submit</button>
+          <button type="submit" id="generateBtn" class="btn-submit">Generate speech</button>
         </form>
 
         <div class="player-wrap" hidden id="playerWrap">
