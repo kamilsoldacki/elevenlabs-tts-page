@@ -5,17 +5,19 @@ const VOICES = [
 
 const MAX_CHARS = 5000;
 const MODEL_ID = "eleven_v4";
-const API_KEY_STORAGE = "elevenlabs_tts_api_key";
+const API_KEY = "__ELEVENLABS_API_KEY__";
+const hasBuiltInKey = API_KEY !== "__ELEVENLABS_API_KEY__";
 
+const ttsForm = document.getElementById("ttsForm");
 const voiceSelect = document.getElementById("voiceSelect");
-const apiKeyInput = document.getElementById("apiKeyInput");
 const textInput = document.getElementById("textInput");
-const charCount = document.getElementById("charCount");
 const generateBtn = document.getElementById("generateBtn");
 const audioPlayer = document.getElementById("audioPlayer");
 const playerWrap = document.getElementById("playerWrap");
 const statusText = document.getElementById("statusText");
 const errorBox = document.getElementById("errorBox");
+const apiKeySection = document.getElementById("apiKeySection");
+const apiKeyInput = document.getElementById("apiKeyInput");
 
 let lastBlobUrl = null;
 
@@ -26,14 +28,14 @@ for (const voice of VOICES) {
   voiceSelect.appendChild(option);
 }
 
-const savedKey = sessionStorage.getItem(API_KEY_STORAGE);
-if (savedKey) apiKeyInput.value = savedKey;
+if (!hasBuiltInKey && apiKeySection) {
+  apiKeySection.hidden = false;
+}
 
-apiKeyInput.addEventListener("change", () => {
-  const key = apiKeyInput.value.trim();
-  if (key) sessionStorage.setItem(API_KEY_STORAGE, key);
-  else sessionStorage.removeItem(API_KEY_STORAGE);
-});
+function getApiKey() {
+  if (hasBuiltInKey) return API_KEY;
+  return apiKeyInput?.value.trim() || "";
+}
 
 function showError(message) {
   if (!message) {
@@ -49,19 +51,12 @@ function setStatus(message) {
   statusText.textContent = message || "";
 }
 
-function updateCharCount() {
-  charCount.textContent = String(textInput.value.length);
-}
-
 function revokeBlobUrl() {
   if (lastBlobUrl) {
     URL.revokeObjectURL(lastBlobUrl);
     lastBlobUrl = null;
   }
 }
-
-textInput.addEventListener("input", updateCharCount);
-updateCharCount();
 
 async function generateSpeech() {
   showError(null);
@@ -72,14 +67,17 @@ async function generateSpeech() {
     showError("Wpisz tekst do wygenerowania.");
     return;
   }
-
-  const apiKey = apiKeyInput.value.trim();
-  if (!apiKey) {
-    showError("Wklej klucz API ElevenLabs w polu powyżej.");
-    apiKeyInput.focus();
+  if (text.length > MAX_CHARS) {
+    showError(`Tekst jest za długi (max ${MAX_CHARS} znaków).`);
     return;
   }
-  sessionStorage.setItem(API_KEY_STORAGE, apiKey);
+
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    showError("Brak klucza API.");
+    if (apiKeySection) apiKeySection.open = true;
+    return;
+  }
 
   const voiceId = voiceSelect.value;
   generateBtn.disabled = true;
@@ -124,15 +122,14 @@ async function generateSpeech() {
     await audioPlayer.play().catch(() => {});
   } catch (error) {
     console.error(error);
-    const msg = error instanceof Error ? error.message : String(error);
-    showError(msg);
+    showError(error instanceof Error ? error.message : String(error));
     setStatus("");
   } finally {
     generateBtn.disabled = false;
   }
 }
 
-document.getElementById("ttsForm").addEventListener("submit", (event) => {
+ttsForm.addEventListener("submit", (event) => {
   event.preventDefault();
   generateSpeech();
 });

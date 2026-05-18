@@ -18,16 +18,6 @@
           </label>
 
           <label class="field">
-            <span class="field-label">xi-api-key<span class="req">*</span></span>
-            <input
-              id="apiKeyInput"
-              class="input"
-              type="password"
-              autocomplete="off"
-            />
-          </label>
-
-          <label class="field">
             <span class="field-label">Tekst<span class="req">*</span></span>
             <textarea
               id="textInput"
@@ -37,6 +27,19 @@
               required
             ></textarea>
           </label>
+
+          <details id="apiKeySection" class="api-key-box" hidden>
+            <summary>Klucz API (tylko lokalnie)</summary>
+            <label class="field">
+              <span class="field-label">xi-api-key<span class="req">*</span></span>
+              <input
+                id="apiKeyInput"
+                class="input"
+                type="password"
+                autocomplete="off"
+              />
+            </label>
+          </details>
 
           <button type="submit" id="generateBtn" class="btn-submit">Submit</button>
         </form>
