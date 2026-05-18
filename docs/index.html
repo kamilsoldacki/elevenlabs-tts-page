@@ -3,55 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Generator mowy — ElevenLabs</title>
+    <title>Text to Speech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="wrap">
+    <div class="bloom" aria-hidden="true"></div>
+
+    <main class="page">
       <header class="hero">
-        <p class="eyebrow">ElevenLabs · Text to Speech</p>
-        <h1>Wpisz tekst i posłuchaj</h1>
+        <p class="tagline">Text to Speech</p>
+        <h1 class="title">Wpisz tekst<br />i posłuchaj</h1>
         <p class="lead">
-          Wybierz głos, wklej tekst (do 5000 znaków) i kliknij „Generuj audio”.
+          Wybierz głos, wklej tekst (do 5000 znaków) i wygeneruj nagranie.
         </p>
       </header>
 
-      <section class="panel">
+      <section class="form-section">
         <label class="field">
-          <span>Głos</span>
-          <select id="voiceSelect"></select>
+          <span class="field-label">Głos</span>
+          <select id="voiceSelect" class="control"></select>
         </label>
 
         <label class="field">
-          <span>Klucz API ElevenLabs</span>
+          <span class="field-label">Klucz API ElevenLabs</span>
           <input
             id="apiKeyInput"
+            class="control"
             type="password"
             autocomplete="off"
-            placeholder="xi-api-key z elevenlabs.io/app/settings/api-keys"
+            placeholder="xi-api-key z elevenlabs.io"
           />
           <p class="hint">Zapisany tylko w tej przeglądarce (sessionStorage).</p>
         </label>
 
         <label class="field field-text">
-          <span>Tekst</span>
+          <span class="field-label">Tekst</span>
           <textarea
             id="textInput"
-            rows="8"
+            class="control"
+            rows="6"
             placeholder="Wpisz tutaj tekst do odczytania…"
             maxlength="5000"
           ></textarea>
           <p class="counter"><span id="charCount">0</span> / 5000</p>
         </label>
 
-        <div class="actions">
-          <button type="button" id="generateBtn" class="btn primary">
-            Generuj audio
-          </button>
-          <button type="button" id="downloadBtn" class="btn" disabled>
-            Pobierz MP3
-          </button>
-        </div>
+        <button type="button" id="generateBtn" class="btn-submit">
+          Generuj audio
+        </button>
 
         <div class="player-wrap" hidden id="playerWrap">
           <audio id="audioPlayer" controls></audio>
@@ -60,6 +65,10 @@
         <p id="statusText" class="status-line" aria-live="polite"></p>
         <p id="errorBox" class="error" hidden></p>
       </section>
+
+      <footer class="site-footer">
+        <p class="powered">Powered by ElevenLabs</p>
+      </footer>
     </main>
     <script src="app.js"></script>
   </body>

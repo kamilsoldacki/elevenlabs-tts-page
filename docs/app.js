@@ -1,11 +1,10 @@
-/** Podmień na swoje Voice ID z panelu ElevenLabs */
 const VOICES = [
-  { id: "lYIvli55CxINzvbh8oZz", label: "kamils velvet 1" },
-  { id: "nvbM3KZPuigiEc7sUMwu", label: "kamils midnight 1" },
+  { id: "8PFKHwg70zjSRTfDg4hk", label: "Głos 1" },
+  { id: "7hDCGMwLtzZG6Zh6ZUVC", label: "Głos 2" },
 ];
 
 const MAX_CHARS = 5000;
-const MODEL_ID = "eleven_multilingual_v2";
+const MODEL_ID = "eleven_v4";
 const API_KEY_STORAGE = "elevenlabs_tts_api_key";
 
 const voiceSelect = document.getElementById("voiceSelect");
@@ -13,14 +12,12 @@ const apiKeyInput = document.getElementById("apiKeyInput");
 const textInput = document.getElementById("textInput");
 const charCount = document.getElementById("charCount");
 const generateBtn = document.getElementById("generateBtn");
-const downloadBtn = document.getElementById("downloadBtn");
 const audioPlayer = document.getElementById("audioPlayer");
 const playerWrap = document.getElementById("playerWrap");
 const statusText = document.getElementById("statusText");
 const errorBox = document.getElementById("errorBox");
 
 let lastBlobUrl = null;
-let lastBlob = null;
 
 for (const voice of VOICES) {
   const option = document.createElement("option");
@@ -61,8 +58,6 @@ function revokeBlobUrl() {
     URL.revokeObjectURL(lastBlobUrl);
     lastBlobUrl = null;
   }
-  lastBlob = null;
-  downloadBtn.disabled = true;
 }
 
 textInput.addEventListener("input", updateCharCount);
@@ -88,7 +83,6 @@ async function generateSpeech() {
 
   const voiceId = voiceSelect.value;
   generateBtn.disabled = true;
-  downloadBtn.disabled = true;
   setStatus("Generuję audio…");
 
   try {
@@ -123,12 +117,10 @@ async function generateSpeech() {
 
     const blob = await response.blob();
     revokeBlobUrl();
-    lastBlob = blob;
     lastBlobUrl = URL.createObjectURL(blob);
     audioPlayer.src = lastBlobUrl;
     playerWrap.hidden = false;
-    downloadBtn.disabled = false;
-    setStatus("Gotowe — możesz odsłuchać lub pobrać plik.");
+    setStatus("Gotowe — możesz odsłuchać nagranie.");
     await audioPlayer.play().catch(() => {});
   } catch (error) {
     console.error(error);
@@ -140,13 +132,4 @@ async function generateSpeech() {
   }
 }
 
-function downloadAudio() {
-  if (!lastBlob) return;
-  const link = document.createElement("a");
-  link.href = lastBlobUrl;
-  link.download = `tts-${Date.now()}.mp3`;
-  link.click();
-}
-
 generateBtn.addEventListener("click", generateSpeech);
-downloadBtn.addEventListener("click", downloadAudio);

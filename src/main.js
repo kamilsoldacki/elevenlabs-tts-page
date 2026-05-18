@@ -1,15 +1,13 @@
-import { VOICES, MAX_CHARS } from "./voices.js";
+import { VOICES, MAX_CHARS, MODEL_ID } from "./voices.js";
 
 const API_KEY_STORAGE = "elevenlabs_tts_api_key";
 const builtInApiKey = import.meta.env.VITE_ELEVENLABS_API_KEY?.trim() || "";
-const modelId =
-  import.meta.env.VITE_TTS_MODEL_ID?.trim() || "eleven_multilingual_v2";
+const modelId = import.meta.env.VITE_TTS_MODEL_ID?.trim() || MODEL_ID;
 
 const voiceSelect = document.getElementById("voiceSelect");
 const textInput = document.getElementById("textInput");
 const charCount = document.getElementById("charCount");
 const generateBtn = document.getElementById("generateBtn");
-const downloadBtn = document.getElementById("downloadBtn");
 const audioPlayer = document.getElementById("audioPlayer");
 const playerWrap = document.getElementById("playerWrap");
 const statusText = document.getElementById("statusText");
@@ -18,7 +16,6 @@ const apiKeySection = document.getElementById("apiKeySection");
 const apiKeyInput = document.getElementById("apiKeyInput");
 
 let lastBlobUrl = null;
-let lastBlob = null;
 
 for (const voice of VOICES) {
   const option = document.createElement("option");
@@ -68,8 +65,6 @@ function revokeBlobUrl() {
     URL.revokeObjectURL(lastBlobUrl);
     lastBlobUrl = null;
   }
-  lastBlob = null;
-  downloadBtn.disabled = true;
 }
 
 textInput.addEventListener("input", updateCharCount);
@@ -100,7 +95,6 @@ async function generateSpeech() {
 
   const voiceId = voiceSelect.value;
   generateBtn.disabled = true;
-  downloadBtn.disabled = true;
   setStatus("Generuję audio…");
 
   try {
@@ -138,15 +132,11 @@ async function generateSpeech() {
 
     const blob = await response.blob();
     revokeBlobUrl();
-    lastBlob = blob;
     lastBlobUrl = URL.createObjectURL(blob);
     audioPlayer.src = lastBlobUrl;
     playerWrap.hidden = false;
-    downloadBtn.disabled = false;
-    setStatus("Gotowe — możesz odsłuchać lub pobrać plik.");
-    await audioPlayer.play().catch(() => {
-      /* autoplay może być zablokowany — użytkownik kliknie play */
-    });
+    setStatus("Gotowe — możesz odsłuchać nagranie.");
+    await audioPlayer.play().catch(() => {});
   } catch (error) {
     console.error(error);
     const msg = error instanceof Error ? error.message : String(error);
@@ -163,13 +153,4 @@ async function generateSpeech() {
   }
 }
 
-function downloadAudio() {
-  if (!lastBlob) return;
-  const link = document.createElement("a");
-  link.href = lastBlobUrl;
-  link.download = `tts-${Date.now()}.mp3`;
-  link.click();
-}
-
 generateBtn.addEventListener("click", generateSpeech);
-downloadBtn.addEventListener("click", downloadAudio);
