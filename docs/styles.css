@@ -1,14 +1,16 @@
 :root {
-  color-scheme: dark;
-  --bg: #000;
-  --text: #fff;
-  --label: #fff;
-  --input-bg: #fff;
-  --input-text: #000;
-  --input-border: #e0e0e0;
-  --btn-bg: #fff;
-  --btn-text: #000;
-  --error: #ff6b6b;
+  color-scheme: light;
+  --bg: #f3d9e4;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --label: #1a1a1a;
+  --input-border: #d8d8d8;
+  --input-focus: #7b4fa8;
+  --btn-bg: #7b4fa8;
+  --btn-hover: #6a4392;
+  --btn-text: #ffffff;
+  --muted: #666666;
+  --error: #c0392b;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -33,21 +35,25 @@ body {
 
 .block {
   width: 100%;
-  max-width: 22rem;
+  max-width: 26rem;
+  background: var(--card);
+  padding: 2rem 1.75rem 1.75rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .block-title {
-  margin: 0 0 1.75rem;
+  margin: 0 0 1.5rem;
   font-size: 1.125rem;
   font-weight: 400;
   text-align: center;
   line-height: 1.35;
+  color: var(--text);
 }
 
 .block-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.1rem;
 }
 
 .field {
@@ -69,50 +75,41 @@ body {
 .input {
   width: 100%;
   margin: 0;
-  padding: 0.6rem 0.75rem;
+  padding: 0.55rem 0.65rem;
   font: inherit;
   font-size: 0.875rem;
-  color: var(--input-text);
-  background: var(--input-bg);
+  color: var(--text);
+  background: var(--card);
   border: 1px solid var(--input-border);
   border-radius: 0;
 }
 
 .input:focus {
-  outline: 2px solid #fff;
-  outline-offset: 1px;
+  outline: 2px solid var(--input-focus);
+  outline-offset: 0;
+  border-color: var(--input-focus);
 }
 
 select.input {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23000' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
+  background-color: var(--card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%231a1a1a' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0.75rem center;
+  background-position: right 0.65rem center;
   padding-right: 2rem;
 }
 
 textarea.input {
   resize: vertical;
-  min-height: 6.5rem;
+  min-height: 6rem;
   line-height: 1.45;
-}
-
-.api-key-box summary {
-  cursor: pointer;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.65);
-  margin-bottom: 0.75rem;
-}
-
-.api-key-box summary::-webkit-details-marker {
-  display: none;
 }
 
 .btn-submit {
   width: 100%;
-  margin-top: 0.25rem;
-  padding: 0.7rem 1rem;
+  margin-top: 0.35rem;
+  padding: 0.65rem 1rem;
   font: inherit;
   font-size: 0.875rem;
   font-weight: 400;
@@ -121,14 +118,15 @@ textarea.input {
   border: none;
   border-radius: 0;
   cursor: pointer;
+  transition: background 0.15s ease;
 }
 
 .btn-submit:hover:not(:disabled) {
-  opacity: 0.92;
+  background: var(--btn-hover);
 }
 
 .btn-submit:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
@@ -144,7 +142,7 @@ textarea.input {
   margin: 1rem 0 0;
   font-size: 0.8rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--muted);
 }
 
 .error {

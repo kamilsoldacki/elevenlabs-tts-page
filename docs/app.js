@@ -6,7 +6,6 @@ const VOICES = [
 const MAX_CHARS = 5000;
 const MODEL_ID = "eleven_v4";
 const API_KEY = "__ELEVENLABS_API_KEY__";
-const hasBuiltInKey = API_KEY !== "__ELEVENLABS_API_KEY__";
 
 const ttsForm = document.getElementById("ttsForm");
 const voiceSelect = document.getElementById("voiceSelect");
@@ -16,8 +15,6 @@ const audioPlayer = document.getElementById("audioPlayer");
 const playerWrap = document.getElementById("playerWrap");
 const statusText = document.getElementById("statusText");
 const errorBox = document.getElementById("errorBox");
-const apiKeySection = document.getElementById("apiKeySection");
-const apiKeyInput = document.getElementById("apiKeyInput");
 
 let lastBlobUrl = null;
 
@@ -26,15 +23,6 @@ for (const voice of VOICES) {
   option.value = voice.id;
   option.textContent = voice.label;
   voiceSelect.appendChild(option);
-}
-
-if (!hasBuiltInKey && apiKeySection) {
-  apiKeySection.hidden = false;
-}
-
-function getApiKey() {
-  if (hasBuiltInKey) return API_KEY;
-  return apiKeyInput?.value.trim() || "";
 }
 
 function showError(message) {
@@ -62,6 +50,11 @@ async function generateSpeech() {
   showError(null);
   setStatus("");
 
+  if (API_KEY === "__ELEVENLABS_API_KEY__") {
+    showError("Strona nie została wdrożona z GitHub Actions (brak klucza w buildzie).");
+    return;
+  }
+
   const text = textInput.value.trim();
   if (!text) {
     showError("Wpisz tekst do wygenerowania.");
@@ -69,13 +62,6 @@ async function generateSpeech() {
   }
   if (text.length > MAX_CHARS) {
     showError(`Tekst jest za długi (max ${MAX_CHARS} znaków).`);
-    return;
-  }
-
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    showError("Brak klucza API.");
-    if (apiKeySection) apiKeySection.open = true;
     return;
   }
 
@@ -89,7 +75,7 @@ async function generateSpeech() {
       {
         method: "POST",
         headers: {
-          "xi-api-key": apiKey,
+          "xi-api-key": API_KEY,
           "Content-Type": "application/json",
           Accept: "audio/mpeg",
         },
