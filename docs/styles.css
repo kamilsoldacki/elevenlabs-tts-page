@@ -117,7 +117,7 @@ textarea.input {
   color: var(--btn-text);
   background: var(--btn-bg);
   border: none;
-  border-radius: 0;
+  border-radius: 8px;
   cursor: pointer;
   transition: background 0.15s ease;
 }
