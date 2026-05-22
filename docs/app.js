@@ -1,6 +1,8 @@
 const VOICES = [
   { id: "8PFKHwg70zjSRTfDg4hk", label: "Tilly PVC1 2026-05-18" },
   { id: "7hDCGMwLtzZG6Zh6ZUVC", label: "Tilly PVC2 2026-05-18" },
+  { id: "Sg8O60o1UrYZlIw1eYvE", label: "Tilly PVC3 2026-05-22" },
+  { id: "vRtxFKWJzHlaYdQSyUqs", label: "Tilly PVC4 2026-05-22" },
 ];
 
 const MAX_CHARS = 5000;
